@@ -960,7 +960,7 @@ document.addEventListener('DOMContentLoaded', () => {
       leaderboardList.innerHTML = '';
   
       if (leaderboard.length === 0) {
-        leaderboardList.innerHTML = '<li>Поки що немає заявок. Пройдіть щоденний челендж!</li>';
+        leaderboardList.innerHTML = '<li>Поки ніхто не пройшов щоденний челендж. Пройдіть щоденний челендж!</li>';
         return;
       }
   
