@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВІДГАДАЙ СЛОВО</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="menu-buttons">
+                <button id="help-button" class="icon-button" aria-label="Допомога"><i class="fas fa-question"></i></button>
+                <button id="leaderboard-button" class="icon-button" aria-label="Рейтинг"><i class="fas fa-trophy"></i></button>
+            </div>
+            <h1>СЛОВОГРАЙ</h1>
+            <div class="ukraine-accent"></div>
+            <div class="menu-buttons">
+                <button id="stats-button" class="icon-button" aria-label="Статистика"><i class="fas fa-chart-bar"></i></button>
+                <button id="settings-button" class="icon-button" aria-label="Налаштування"><i class="fas fa-cog"></i></button>
+                <button id="dark-mode-toggle" class="icon-button" aria-label="Темний режим"><i class="fas fa-moon"></i></button>
+            </div>
+        </header>
+
+        <div id="game-info">
+             <span id="current-mode-display">Режим: Класичний</span> |
+             <span id="word-length-display">Довжина: 5</span> |
+             <span id="daily-timer" style="display: none;">Час: 0с</span>
+             <span id="daily-word-progress" style="display: none;">Слово: 1/5</span>
+        </div>
+
+        <div id="message-container"></div>
+
+        <div id="game-grid">
+        </div>
+
+        <div id="keyboard">
+        </div>
+    </div>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h2>Ласкаво просимо!</h2>
+            <p>Будь ласка, введіть нікнейм:</p>
+            <input type="text" id="username-input" maxlength="15" placeholder="Нікнейм">
+            <button id="login-button">Почати гру</button>
+            <p id="login-error" class="error-message"></p>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" data-modal-id="settings-modal">&times;</button>
+            <h2>Налаштування</h2>
+            <div class="setting-option">
+                <label>Режим гри:</label>
+                <label><input type="radio" name="gameMode" value="standard" checked> Класичний</label>
+                <label><input type="radio" name="gameMode" value="daily"> Щоденний виклик</label>
+            </div>
+            <div class="setting-option" id="word-length-setting">
+                <label for="word-length-select">Довжина слова (Класичний режим):</label>
+                <select id="word-length-select">
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <button id="logout-button">Вийти</button>
+            <button id="apply-settings-button">Застосувати і перезапустити</button>
+        </div>
+    </div>
+
+    <div id="stats-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" data-modal-id="stats-modal">&times;</button>
+            <h2>Статистика (<span id="stats-username"></span>)</h2>
+            <div class="stats-grid">
+                <div>
+                    <div class="stat-value" id="stats-played">0</div>
+                    <div class="stat-label">Зіграно</div>
+                </div>
+                <div>
+                    <div class="stat-value" id="stats-win-percentage">0</div>
+                    <div class="stat-label">Виграно %</div>
+                </div>
+                <div>
+                    <div class="stat-value" id="stats-current-streak">0</div>
+                    <div class="stat-label">Поточна серія</div>
+                </div>
+                 <div>
+                    <div class="stat-value" id="stats-max-streak">0</div>
+                    <div class="stat-label">Макс. серія</div>
+                </div>
+            </div>
+            <h3>Розподіл спроб</h3>
+            <div id="stats-distribution">
+            </div>
+            <h3>Щоденний режим</h3>
+            <p>Успішність: <span id="stats-daily-success-rate">Н/Д</span></p>
+            <p>Найшвидший час: <span id="stats-daily-fastest-time">Н/Д</span></p>
+            
+            <button id="reset-stats-button" class="reset-button">Скинути статистику</button>
+        </div>
+    </div>
+
+    <div id="leaderboard-modal" class="modal">
+        <div class="modal-content">
+             <button class="close-button" data-modal-id="leaderboard-modal">&times;</button>
+            <h2>Рейтинг щоденних викликів</h2>
+            <p>(Найшвидші часи)</p>
+            <ol id="leaderboard-list">
+                <li>Записів ще немає.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" data-modal-id="help-modal">&times;</button>
+            <h2>Як грати</h2>
+            <p>Відгадайте приховане слово за 6 спроб.</p>
+            <ul>
+                <li>Кожна спроба повинна бути дійсним словом вказаної довжини.</li>
+                <li>Натисніть Enter, щоб підтвердити.</li>
+                <li>Після кожної спроби колір плиток змінюватиметься, показуючи, наскільки близька ваша спроба до слова.</li>
+            </ul>
+            <hr>
+            <p><strong>Приклади:</strong></p>
+            <div class="help-example">
+                <div class="tile correct">С</div>
+                <div class="tile">Л</div>
+                <div class="tile">О</div>
+                <div class="tile">В</div>
+                <div class="tile">О</div>
+            </div>
+            <p>Літера <strong>С</strong> є в слові і в правильному місці.</p>
+            <div class="help-example">
+                <div class="tile">К</div>
+                <div class="tile present">О</div>
+                <div class="tile">Д</div>
+                <div class="tile">Е</div>
+                <div class="tile">Р</div>
+            </div>
+            <p>Літера <strong>О</strong> є в слові, але в неправильному місці.</p>
+            <div class="help-example">
+                <div class="tile">К</div>
+                <div class="tile">Р</div>
+                <div class="tile">И</div>
+                <div class="tile absent">Л</div>
+                <div class="tile">А</div>
+            </div>
+            <p>Літери <strong>У</strong> немає в слові взагалі.</p>
+            <hr>
+            <p><strong>Класичний режим:</strong> Оберіть довжину слова (4-8). Вгадайте випадкове слово.</p>
+            <p><strong>Щоденний виклик:</strong> Вгадайте послідовність із 5 слів (від 4 до 8 літер). Змагайтеся за найшвидший час!</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
