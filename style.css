@@ -42,6 +42,7 @@ body.dark-mode {
   --text-color: #ffffff;
   --border-color: #4a3c7d; 
   --tile-bg: #1a1633;
+  --key-bg: #4a3c7d; 
   --key-text-color: #ffffff;
   --absent-bg: #534a6e; 
   --modal-bg: #2c2560; 
@@ -671,6 +672,7 @@ select:focus-visible {
   outline: 2px solid var(--present-bg);
   outline-offset: 2px;
 }
+
 
 #dark-mode-toggle {
   transition: transform 0.3s;
